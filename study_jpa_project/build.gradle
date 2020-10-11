@@ -1,6 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.3.4.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"					// QueryDSL 
 	id 'java'
 	id 'war'
 }
@@ -19,11 +20,14 @@ dependencies {
 //	implementation 'com.fasterxml.jackson.core:2.7.3'						// Jackson
 //	implementation 'springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'	// JPA
+//	implementation 'com.querydsl:querydsl-jpa'								// QueryDSL 
+	compile("com.querydsl:querydsl-jpa") // querydsl
+	compile("com.querydsl:querydsl-apt") // querydsl
 	
 //    compile("com.h2database:h2")
     
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	implementation 'org.springframework.boot:spring-boot-starter-web'		// Spring Web
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'	// Spring Tomcat
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
@@ -31,4 +35,28 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+def querydslSrcDir = 'src/main/generated'
+
+querydsl {
+    library = "com.querydsl:querydsl-apt"
+    jpa = true
+    querydslSourcesDir = querydslSrcDir
+}
+
+compileQuerydsl{
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', querydslSrcDir]
+        }
+    }
 }

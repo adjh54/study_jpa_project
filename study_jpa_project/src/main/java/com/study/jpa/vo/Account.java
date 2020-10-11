@@ -25,10 +25,9 @@ import lombok.Setter;
  * @author JONGHOON
  *
  */
-@Entity(name = "myAccount")
-@Table(name = "Account")
 @Getter
 @Setter
+@Entity(name = "tb_account")
 public class Account {
 
 	/**

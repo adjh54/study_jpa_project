@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
+@Entity(name = "tb_study")
 @Getter
 @Setter
 public class Study {
