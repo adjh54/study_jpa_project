@@ -20,4 +20,5 @@ public class BookEntity {
 	private String bookId;
 	
 	private String bookName;
+	
 }
